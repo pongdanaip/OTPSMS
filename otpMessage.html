@@ -70,7 +70,8 @@
 
             // Listen for messages from the webpage
             $(window).on('message', event => {
-                alert("you receive OTP Message");
+                console.log(event.data);
+                console.log(event.data.action);
             });
 
             $(".fn-otp-input").keyup(function () {
