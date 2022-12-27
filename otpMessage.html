@@ -14,12 +14,12 @@
         }
     </style>
     <div class="fn-otp-input-section">
-        <input type="text" id="OTP_1" name="OTP_1" class="fn-otp-input noto-l-bold txt-Reqkeynumber" inputmode="numeric" maxlength="1" data-index="0" autocomplete="off" data-next="OTP_2">
-        <input type="text" id="OTP_2" name="OTP_2" class="fn-otp-input noto-l-bold txt-Reqkeynumber" inputmode="numeric" maxlength="1" data-index="1" autocomplete="off" data-next="OTP_3" data-previous="OTP_1" disabled>
-        <input type="text" id="OTP_3" name="OTP_3" class="fn-otp-input noto-l-bold txt-Reqkeynumber" inputmode="numeric" maxlength="1" data-index="2" autocomplete="off" data-next="OTP_4" data-previous="OTP_2" disabled>
-        <input type="text" id="OTP_4" name="OTP_4" class="fn-otp-input noto-l-bold txt-Reqkeynumber" inputmode="numeric" maxlength="1" data-index="3" autocomplete="off" data-next="OTP_5" data-previous="OTP_3" disabled>
-        <input type="text" id="OTP_5" name="OTP_5" class="fn-otp-input noto-l-bold txt-Reqkeynumber" inputmode="numeric" maxlength="1" data-index="4" autocomplete="off" data-next="OTP_6" data-previous="OTP_4" disabled>
-        <input type="text" id="OTP_6" name="OTP_6" class="fn-otp-input noto-l-bold txt-Reqkeynumber" inputmode="numeric" maxlength="1" data-index="5" autocomplete="off" data-previous="OTP_5" disabled>
+        <input type="text" id="OTP_1" name="OTP_1" class="fn-otp-input noto-l-bold txt-Reqkeynumber" inputmode="numeric" data-index="0" autocomplete="off" data-next="OTP_2">
+        <input type="text" id="OTP_2" name="OTP_2" class="fn-otp-input noto-l-bold txt-Reqkeynumber" inputmode="numeric" data-index="1" autocomplete="off" data-next="OTP_3" data-previous="OTP_1" disabled>
+        <input type="text" id="OTP_3" name="OTP_3" class="fn-otp-input noto-l-bold txt-Reqkeynumber" inputmode="numeric" data-index="2" autocomplete="off" data-next="OTP_4" data-previous="OTP_2" disabled>
+        <input type="text" id="OTP_4" name="OTP_4" class="fn-otp-input noto-l-bold txt-Reqkeynumber" inputmode="numeric" data-index="3" autocomplete="off" data-next="OTP_5" data-previous="OTP_3" disabled>
+        <input type="text" id="OTP_5" name="OTP_5" class="fn-otp-input noto-l-bold txt-Reqkeynumber" inputmode="numeric" data-index="4" autocomplete="off" data-next="OTP_6" data-previous="OTP_4" disabled>
+        <input type="text" id="OTP_6" name="OTP_6" class="fn-otp-input noto-l-bold txt-Reqkeynumber" inputmode="numeric" data-index="5" autocomplete="off" data-previous="OTP_5" disabled>
     </div>
     <script>
         $(function () {
@@ -68,11 +68,29 @@
 
             });
 
-            // Listen for messages from the webpage
-            $(window).on('message', event => {
-                console.log(event.data);
-                console.log(event.data.action);
-            });
+            const handleChange = (e) => {
+                const val = e.target.value;
+
+                if (!val) {
+                    e.preventDefault();
+                    return;
+                }
+
+                // add this condition to manually trigger the paste
+                // function and manually send the value to clipboard
+
+                else if (val.trim().length > 1) {
+                    e.clipboardData = {
+                        getData: () => val.trim(),
+                    };
+                    handleOnPaste(e);
+                } else {
+
+                    // do any other required changes
+                }
+            };
+
+            handleChange();
 
             $(".fn-otp-input").keyup(function () {
                 if ($(this).val() == "" || $(this).val() == undefined) {
