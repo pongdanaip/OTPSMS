@@ -68,11 +68,11 @@
 
             });
 
-            const handleChange = (e) => {
+            const handleChange = (ev) => {
                 const val = e.target.value;
 
                 if (!val) {
-                    e.preventDefault();
+                    ev.preventDefault();
                     return;
                 }
 
@@ -80,10 +80,15 @@
                 // function and manually send the value to clipboard
 
                 else if (val.trim().length > 1) {
-                    e.clipboardData = {
-                        getData: () => val.trim(),
-                    };
-                    handleOnPaste(e);
+                    const clip = ev.originalEvent.clipboardData.getData('text').trim();
+                    // Allow numbers only
+                    if (!/\d{6}/.test(clip)) return ev.preventDefault(); // Invalid. Exit here
+                    // Split string to Array or characters
+                    const s = [...clip];
+                    // Populate inputs. Focus last input.
+                    $inp.val(i => s[i]).eq(5).focus();
+                    $inp.removeAttr('disabled');
+                    handleOnPaste(ev);
                 } else {
 
                     // do any other required changes
