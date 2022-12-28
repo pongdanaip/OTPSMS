@@ -57,7 +57,7 @@
   });
 
   // When the user types in an input field
-  /*$inp.on('input', function() {
+  $inp.on('input', function() {
     // Get the current value of the input field
     var inputValue = $(this).val();
 
@@ -69,7 +69,7 @@
       // Focus on the next input field
       $(this).next('.input-field').focus();
     }
-  });*/
+  });
 
   $(".fn-otp-input").keyup(function () {
         if ($(this).val() == "" || $(this).val() == undefined) {        		
@@ -80,6 +80,7 @@
             $(this).nextAll().removeAttr('disabled');
             $(this).next().focus();
         }
+        console.log($(this));
     });
 
   const handlePaste = function handlePaste(ev) {
@@ -125,7 +126,6 @@
     }
   });*/
 });
-
 
     </script>
 </body>
