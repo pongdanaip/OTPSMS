@@ -29,7 +29,7 @@
 
     </div>
     <script>
-        $(document).ready(function() {
+       $(document).ready(function() {
 
   const $inp = $(".fn-otp-input");
 
@@ -47,12 +47,23 @@
     input(ev) { // Handle typing
 
       const i = $inp.index(this);
-      if (this.value) $inp.eq(i + 1).focus();
+      console.log(this.value + "+ this asdasd");
+      if ($(this).val() == "" || $(this).val() == undefined) {
+      	if($(this).next().val() == "" || $(this).next().val() == undefined) {
+        	$inp.eq(i - 1).focus().nextAll().prop("disabled", true);
+        }
+      } else {
+      	$(this).nextAll().removeAttr('disabled');
+        //this.next().focus();
+      	$inp.eq(i + 1).focus();
+      }
     },
-    keydown(ev) { // Handle Deleting
+    keyup(ev) { // Handle Deleting
 
       const i = $inp.index(this);
-      if (!this.value && ev.key === "Backspace" && i) $inp.eq(i - 1).focus();
+      if (!this.value && ev.key === "Backspace" && i) {
+      	$inp.eq(i - 1).focus();
+      }
     }
   });
 
@@ -71,22 +82,10 @@
     }
   });
 
-  $(".fn-otp-input").keyup(function () {
-        if ($(this).val() == "" || $(this).val() == undefined) {        		
-            if ($(this).next().val() == "" || $(this).next().val() == undefined) {
-                $(this).nextAll().prop("disabled", true);
-            }
-        } else {
-            $(this).nextAll().removeAttr('disabled');
-            $(this).next().focus();
-        }
-        console.log($(this));
-    });
-
   const handlePaste = function handlePaste(ev) {
     $inp.on({
       paste(ev) { // Handle Pasting
-        alert("Paste work");
+        console.log("Paste work");
         const clip = ev.originalEvent.clipboardData.getData('text').trim();
         // Allow numbers only
         if (!/\d{6}/.test(clip)) return ev.preventDefault(); // Invalid. Exit here
@@ -94,11 +93,12 @@
         const s = [...clip];
         // Populate inputs. Focus last input.
         $inp.val(i => s[i]).eq(5).focus();
+        $(".fn-otp-input").removeAttr('disabled');
       }
     });
   }
 
-  /*$inp.on({
+  $inp.on({
     change(ev) {
       //alert("change");
 
@@ -124,7 +124,7 @@
         // do any other required changes
       }
     }
-  });*/
+  });
 });
 
     </script>
