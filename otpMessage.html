@@ -14,85 +14,107 @@
         }
     </style>
     <div class="fn-otp-input-section">
-        <input type="text" id="OTP_1" name="OTP_1" class="fn-otp-input noto-l-bold txt-Reqkeynumber" maxlength="1" inputmode="numeric" data-index="0" autocomplete="off" data-next="OTP_2">
-        <input type="text" id="OTP_2" name="OTP_2" class="fn-otp-input noto-l-bold txt-Reqkeynumber" maxlength="1" inputmode="numeric" data-index="1" autocomplete="off" data-next="OTP_3" data-previous="OTP_1" disabled>
-        <input type="text" id="OTP_3" name="OTP_3" class="fn-otp-input noto-l-bold txt-Reqkeynumber" maxlength="1" inputmode="numeric" data-index="2" autocomplete="off" data-next="OTP_4" data-previous="OTP_2" disabled>
-        <input type="text" id="OTP_4" name="OTP_4" class="fn-otp-input noto-l-bold txt-Reqkeynumber" maxlength="1" inputmode="numeric" data-index="3" autocomplete="off" data-next="OTP_5" data-previous="OTP_3" disabled>
-        <input type="text" id="OTP_5" name="OTP_5" class="fn-otp-input noto-l-bold txt-Reqkeynumber" maxlength="1" inputmode="numeric" data-index="4" autocomplete="off" data-next="OTP_6" data-previous="OTP_4" disabled>
-        <input type="text" id="OTP_6" name="OTP_6" class="fn-otp-input noto-l-bold txt-Reqkeynumber" maxlength="1" inputmode="numeric" data-index="5" autocomplete="off" data-previous="OTP_5" disabled>
+        <div id="banner-message">
+  <p>Hello World</p>
+  <div>
+  
+  
+  <input type="text" id="OTP_EMAIL_1" name="OTP_EMAIL_1" class="fn-otp-input noto-l-bold" inputmode="numeric" data-index="0" autocomplete="one-time-code">
+                                            <input type="text" id="OTP_EMAIL_2" name="OTP_EMAIL_2" class="fn-otp-input noto-l-bold" inputmode="numeric" data-index="1" autocomplete="off" >
+                                            <input type="text" id="OTP_EMAIL_3" name="OTP_EMAIL_3" class="fn-otp-input noto-l-bold" inputmode="numeric" data-index="2" autocomplete="off" >
+                                            <input type="text" id="OTP_EMAIL_4" name="OTP_EMAIL_4" class="fn-otp-input noto-l-bold" inputmode="numeric" data-index="3" autocomplete="off" >
+                                            <input type="text" id="OTP_EMAIL_5" name="OTP_EMAIL_5" class="fn-otp-input noto-l-bold" inputmode="numeric" data-index="4" autocomplete="off" >
+                                            <input type="text" id="OTP_EMAIL_6" name="OTP_EMAIL_6" class="fn-otp-input noto-l-bold" inputmode="numeric" data-index="5" autocomplete="off" ></div>
+</div>
+
     </div>
     <script>
-        $(document).ready(function(){
-	
+        $(document).ready(function() {
+
   const $inp = $(".fn-otp-input");
 
   $inp.on({
-        paste(ev) { // Handle Pasting
+    paste(ev) { // Handle Pasting
 
-            const clip = ev.originalEvent.clipboardData.getData('text').trim();
-            // Allow numbers only
-            if (!/\d{6}/.test(clip)) return ev.preventDefault(); // Invalid. Exit here
-            // Split string to Array or characters
-            const s = [...clip];
-            // Populate inputs. Focus last input.
-            $inp.val(i => s[i]).eq(5).focus();
-        },
-        input(ev) { // Handle typing
+      const clip = ev.originalEvent.clipboardData.getData('text').trim();
+      // Allow numbers only
+      if (!/\d{6}/.test(clip)) return ev.preventDefault(); // Invalid. Exit here
+      // Split string to Array or characters
+      const s = [...clip];
+      // Populate inputs. Focus last input.
+      $inp.val(i => s[i]).eq(5).focus();
+    },
+    input(ev) { // Handle typing
 
-            const i = $inp.index(this);
-            if (this.value) $inp.eq(i + 1).focus();
-        },
-        keydown(ev) { // Handle Deleting
+      const i = $inp.index(this);
+      if (this.value) $inp.eq(i + 1).focus();
+    },
+    keydown(ev) { // Handle Deleting
 
-            const i = $inp.index(this);
-            if (!this.value && ev.key === "Backspace" && i) $inp.eq(i - 1).focus();
-        }
+      const i = $inp.index(this);
+      if (!this.value && ev.key === "Backspace" && i) $inp.eq(i - 1).focus();
+    }
   });
-    
-  const handlePaste = function handlePaste(ev){
+
+  // When the user types in an input field
+  $inp.on('input', function() {
+    // Get the current value of the input field
+    var inputValue = $(this).val();
+
+    // If the input field already has a value and the user typed in another value
+    if (inputValue.length > 1) {
+      // Set the value of the input field to the first digit
+      $(this).val(inputValue[0]);
+
+      // Focus on the next input field
+      $(this).next('.input-field').focus();
+    }
+  });
+
+  const handlePaste = function handlePaste(ev) {
     $inp.on({
-              paste(ev) { // Handle Pasting
-                  alert("Paste work");
-                  const clip = ev.originalEvent.clipboardData.getData('text').trim();
-                  // Allow numbers only
-                  if (!/\d{6}/.test(clip)) return ev.preventDefault(); // Invalid. Exit here
-                  // Split string to Array or characters
-                  const s = [...clip];
-                  // Populate inputs. Focus last input.
-                  $inp.val(i => s[i]).eq(5).focus();
-              }
-            });
+      paste(ev) { // Handle Pasting
+        alert("Paste work");
+        const clip = ev.originalEvent.clipboardData.getData('text').trim();
+        // Allow numbers only
+        if (!/\d{6}/.test(clip)) return ev.preventDefault(); // Invalid. Exit here
+        // Split string to Array or characters
+        const s = [...clip];
+        // Populate inputs. Focus last input.
+        $inp.val(i => s[i]).eq(5).focus();
+      }
+    });
   }
 
-	$inp.on({
-        change(ev) {
-        	//alert("change");
+  /*$inp.on({
+    change(ev) {
+      //alert("change");
 
-          const val = ev.target.value;         
-          if (!val) {
-            //alert("if");
-            ev.preventDefault();
-            return;
+      const val = ev.target.value;
+      if (!val) {
+        //alert("if");
+        ev.preventDefault();
+        return;
+      }
+
+      // add this condition to manually trigger the paste
+      // function and manually send the value to clipboard
+      else if (val.trim().length == 1) {
+        //alert("else if");
+        ev.clipboardData = {
+          getData: function getData() {
+            return val.trim();
           }
-
-          // add this condition to manually trigger the paste
-          // function and manually send the value to clipboard
-
-          else if (val.trim().length == 1) {
-            //alert("else if");
-            ev.clipboardData = {
-              getData: function getData(){
-                return val.trim();
-              } 
-            };
-            handlePaste(ev);
-          } else {
-            //alert("else");
-            // do any other required changes
-          }
-        }
-  });
+        };
+        handlePaste(ev);
+      } else {
+        //alert("else");
+        // do any other required changes
+      }
+    }
+  });*/
 });
+
     </script>
 </body>
 </html>
