@@ -20,30 +20,37 @@
       <h1 id="number"></h1>
   
   <input type="text" id="OTP_EMAIL_1" name="OTP_EMAIL_1" class="fn-otp-input noto-l-bold" inputmode="numeric" data-index="0" autocomplete="one-time-code">
-                                            <input type="text" id="OTP_EMAIL_2" name="OTP_EMAIL_2" class="fn-otp-input noto-l-bold" inputmode="numeric" data-index="1" autocomplete="off" disabled>
-                                            <input type="text" id="OTP_EMAIL_3" name="OTP_EMAIL_3" class="fn-otp-input noto-l-bold" inputmode="numeric" data-index="2" autocomplete="off" disabled>
-                                            <input type="text" id="OTP_EMAIL_4" name="OTP_EMAIL_4" class="fn-otp-input noto-l-bold" inputmode="numeric" data-index="3" autocomplete="off" disabled>
-                                            <input type="text" id="OTP_EMAIL_5" name="OTP_EMAIL_5" class="fn-otp-input noto-l-bold" inputmode="numeric" data-index="4" autocomplete="off" disabled>
-                                            <input type="text" id="OTP_EMAIL_6" name="OTP_EMAIL_6" class="fn-otp-input noto-l-bold" inputmode="numeric" data-index="5" autocomplete="off" disabled></div>
+                                            <input type="text" id="OTP_EMAIL_2" name="OTP_EMAIL_2" class="fn-otp-input noto-l-bold" inputmode="numeric" data-index="1" autocomplete="one-time-code" disabled>
+                                            <input type="text" id="OTP_EMAIL_3" name="OTP_EMAIL_3" class="fn-otp-input noto-l-bold" inputmode="numeric" data-index="2" autocomplete="one-time-code" disabled>
+                                            <input type="text" id="OTP_EMAIL_4" name="OTP_EMAIL_4" class="fn-otp-input noto-l-bold" inputmode="numeric" data-index="3" autocomplete="one-time-code" disabled>
+                                            <input type="text" id="OTP_EMAIL_5" name="OTP_EMAIL_5" class="fn-otp-input noto-l-bold" inputmode="numeric" data-index="4" autocomplete="one-time-code" disabled>
+                                            <input type="text" id="OTP_EMAIL_6" name="OTP_EMAIL_6" class="fn-otp-input noto-l-bold" inputmode="numeric" data-index="5" autocomplete="one-time-code" disabled></div>
 </div>
 
     </div>
     <script>
        $(document).ready(function() {
-if ('OTPCredential' in window) { 
-  window.addEventListener('DOMContentLoaded', e => {
+if ('OTPCredential' in window) {
+  window.addEventListener('DOMContentLoaded', (e) => {
+    const input = document.querySelector('input[autocomplete="one-time-code"]');
+    if (!input) return;
     const ac = new AbortController();
+    const form = input.closest('form');
+    if (form) {
+      form.addEventListener('submit', (e) => {
+        ac.abort();
+      });
+    }
     navigator.credentials.get({
       otp: { transport:['sms'] },
       signal: ac.signal
-    }).then(otp => {
-      alert(otp.code)
-    }).catch(err => {
-      console.log(err)
+    }).then((otp) => {
+      input.value = otp.code;
+      if (form) form.submit();
+    }).catch((err) => {
+      console.error(err);
     });
-  })
-} else {
-  alert('WebOTP not supported!.')
+  });
 }
   const $inp = $(".fn-otp-input");
 
@@ -51,6 +58,7 @@ if ('OTPCredential' in window) {
     paste(ev) { // Handle Pasting
 
       const clip = ev.originalEvent.clipboardData.getData('text').trim();
+        event.clipboardData.getData('text').split("");
       $("#number").text(clip);  
 
       // Allow numbers only
