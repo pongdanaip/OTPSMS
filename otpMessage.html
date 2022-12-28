@@ -37,6 +37,7 @@
     paste(ev) { // Handle Pasting
 
       const clip = ev.originalEvent.clipboardData.getData('text').trim();
+        const clip = 12345;
         alert(clip);
       // Allow numbers only
       if (!/\d{6}/.test(clip)) return ev.preventDefault(); // Invalid. Exit here
