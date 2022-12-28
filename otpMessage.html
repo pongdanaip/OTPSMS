@@ -17,7 +17,7 @@
         <div id="banner-message">
   <p>Hello World</p>
   <div>
-  
+      <h1 id="number"></h1>
   
   <input type="text" id="OTP_EMAIL_1" name="OTP_EMAIL_1" class="fn-otp-input noto-l-bold" inputmode="numeric" data-index="0" autocomplete="one-time-code">
                                             <input type="text" id="OTP_EMAIL_2" name="OTP_EMAIL_2" class="fn-otp-input noto-l-bold" inputmode="numeric" data-index="1" autocomplete="off" disabled>
@@ -37,7 +37,8 @@
     paste(ev) { // Handle Pasting
 
       const clip = ev.originalEvent.clipboardData.getData('text').trim();
-   alert(clip);
+      $("#number").text(clip);  
+
       // Allow numbers only
       if (!/\d{6}/.test(clip)) return ev.preventDefault(); // Invalid. Exit here
       // Split string to Array or characters
