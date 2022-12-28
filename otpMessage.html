@@ -22,64 +22,77 @@
         <input type="text" id="OTP_6" name="OTP_6" class="fn-otp-input noto-l-bold txt-Reqkeynumber" maxlength="1" inputmode="numeric" data-index="5" autocomplete="off" data-previous="OTP_5" disabled>
     </div>
     <script>
-        $(function () {
-            $(".fn-otp-input-section .fn-otp-input").keypress(function (e) {
-                if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
-                    return false;
-                }
+        $(document).ready(function(){
+	
+  const $inp = $(".fn-otp-input");
+
+  $inp.on({
+        paste(ev) { // Handle Pasting
+
+            const clip = ev.originalEvent.clipboardData.getData('text').trim();
+            // Allow numbers only
+            if (!/\d{6}/.test(clip)) return ev.preventDefault(); // Invalid. Exit here
+            // Split string to Array or characters
+            const s = [...clip];
+            // Populate inputs. Focus last input.
+            $inp.val(i => s[i]).eq(5).focus();
+        },
+        input(ev) { // Handle typing
+
+            const i = $inp.index(this);
+            if (this.value) $inp.eq(i + 1).focus();
+        },
+        keydown(ev) { // Handle Deleting
+
+            const i = $inp.index(this);
+            if (!this.value && ev.key === "Backspace" && i) $inp.eq(i - 1).focus();
+        }
+  });
+    
+  const handlePaste = function handlePaste(ev){
+    $inp.on({
+              paste(ev) { // Handle Pasting
+                  alert("Paste work");
+                  const clip = ev.originalEvent.clipboardData.getData('text').trim();
+                  // Allow numbers only
+                  if (!/\d{6}/.test(clip)) return ev.preventDefault(); // Invalid. Exit here
+                  // Split string to Array or characters
+                  const s = [...clip];
+                  // Populate inputs. Focus last input.
+                  $inp.val(i => s[i]).eq(5).focus();
+              }
             });
-        });
+  }
 
-        $(".fn-otp-input-section .fn-otp-input").keydown(function (e) {
-            if (e.which == 8) {
-                if ($(this).val() == "") {
-                    $(this).prev().val("");
-                    $(this).prev().focus();
-                }
-            }
-        });
+	$inp.on({
+        change(ev) {
+        	//alert("change");
 
-        $(document).ready(function () {
-            // paste otp function
-            const $inp = $(".fn-otp-input");
+          const val = ev.target.value;         
+          if (!val) {
+            //alert("if");
+            ev.preventDefault();
+            return;
+          }
 
-            $inp.on({
-                paste(ev) { // Handle Pasting
+          // add this condition to manually trigger the paste
+          // function and manually send the value to clipboard
 
-                    const clip = ev.originalEvent.clipboardData.getData('text').trim();
-                    // Allow numbers only
-                    if (!/\d{6}/.test(clip)) return ev.preventDefault(); // Invalid. Exit here
-                    // Split string to Array or characters
-                    const s = [...clip];
-                    // Populate inputs. Focus last input.
-                    $inp.val(i => s[i]).eq(5).focus();
-                    $inp.removeAttr('disabled');
-                },
-                input(ev) { // Handle typing
-
-                    const i = $inp.index(this);
-                    if (this.value) $inp.eq(i + 1).focus();
-                },
-                keydown(ev) { // Handle Deleting
-
-                    const i = $inp.index(this);
-                    if (!this.value && ev.key === "Backspace" && i) $inp.eq(i - 1).focus();
-                }
-
-            });
-
-            $(".fn-otp-input").keyup(function () {
-                if ($(this).val() == "" || $(this).val() == undefined) {
-                    if ($(this).next().val() == "" || $(this).next().val() == undefined) {
-                        $(this).nextAll().prop("disabled", true);
-                    }
-                } else {
-                    $(this).nextAll().removeAttr('disabled');
-                }
-            });
-
-            // end paste otp function
-        });
+          else if (val.trim().length == 1) {
+            //alert("else if");
+            ev.clipboardData = {
+              getData: function getData(){
+                return val.trim();
+              } 
+            };
+            handlePaste(ev);
+          } else {
+            //alert("else");
+            // do any other required changes
+          }
+        }
+  });
+});
     </script>
 </body>
 </html>
