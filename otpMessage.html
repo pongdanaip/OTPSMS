@@ -29,8 +29,8 @@
             const $inp = $(".fn-otp-input");
 
             $inp.on({
-                paste(ev) { // Handle Pasting
-                    const clip = e.clipboardData.getData('text').trim();
+                paste(e) { // Handle Pasting
+                    const clip = e.originalEvent.clipboardData.getData('text').trim();
                     e.preventDefault();
                     alert("aaa");
                 }
