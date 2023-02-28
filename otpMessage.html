@@ -25,16 +25,11 @@
         </div>
     </form>
     <script>
-        $(document).ready(function(){
-            const $inp = $(".fn-otp-input");
-
-            $inp.on({
-                paste(e) { // Handle Pasting
-                    const clip = e.originalEvent.clipboardData.getData('text').trim();
-                    e.preventDefault();
-                    alert("aaa");
-                }
-            });
+        $(document).ready(function() {
+          $('form').on('submit', function(event) {
+            event.preventDefault();
+            alert("aaa");
+          });
         });
     </script>
 </body>
