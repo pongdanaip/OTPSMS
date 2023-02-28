@@ -31,7 +31,8 @@
             $inp.on({
                 paste(ev) { // Handle Pasting
                     const clip = e.originalEvent.clipboardData.getData('text').trim();
-                    e.preventDefault();                                                    
+                    e.preventDefault();
+                    alert("aaa");
                 }
             //});
         });
