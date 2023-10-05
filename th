@@ -1,0 +1,28 @@
+<style>
+body {
+  margin: 0
+}
+
+.wrapper {
+  background: grey;
+  min-height: 100vh
+}
+
+.btn {
+  background: red;
+  padding: 10px;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+}
+</style>
+
+
+<div class="wrapper">
+
+
+<div class="btn">
+Button
+</div>
+</div>
